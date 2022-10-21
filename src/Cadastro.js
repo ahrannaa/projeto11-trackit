@@ -1,27 +1,97 @@
 import logo from "./img/logo.jpg";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import axios from "axios";
 
-export default function Cadastro(){
-  return( 
+export default function Cadastro() {
+  const [formInfo, setFormInfo] = useState({
+    name: "",
+    password: "",
+    email: "",
+    image:""
+  });
+
+  let navigate = useNavigate();
+
+  const CADASTRO_URL =
+    "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up";
+
+  const handleInputChange = (event) => {
+    const input = event.target;
+    const inputName = input.name; 
+    const inputValue = input.value; 
+
+    setFormInfo((oldFormInfo) => ({
+      ...oldFormInfo,
+      [inputName]: inputValue,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    cadastrarUsuario()
+  };
+
+  const cadastrarUsuario = () => {
+    console.log(JSON.stringify(formInfo))
+    const promise = axios.post(CADASTRO_URL, formInfo);
+
+    promise.then((resposta) => {
+      console.log("FUNCIONOU: " + JSON.stringify(resposta.data));
+      navigate("../", { replace: true });
+    });
+
+    promise.catch((error) => console.log("DEU RUIM: " + error.response.data));
+  };
+
+  return (
     <>
       <Logo>
         <img src={logo} alt="logo" />
       </Logo>
-      <Container>
-        <Input placeholder="email"></Input>
-        <Input placeholder="senha"></Input>
-        <Input placeholder="nome"></Input>
-        <Input placeholder="foto"></Input>
-        <Botao>Cadastrar</Botao>
-        <Teste>
-          <Link to="/">
-            Já tem uma conta? Faça login!
-          </Link>
-        </Teste>
-      </Container>
+      <form onSubmit={handleSubmit}>
+        <Container>
+          <Input
+            type="email"
+            name="email"
+            id="email"
+            value={formInfo.email}
+            onChange={handleInputChange}
+            placeholder="email"
+          ></Input>
+          <Input
+            type="password"
+            name="password"
+            id="password"
+            value={formInfo.password}
+            onChange={handleInputChange}
+            placeholder="senha"
+          ></Input>
+          <Input
+            type="text"
+            name="name"
+            id="name"
+            value={formInfo.name}
+            onChange={handleInputChange}
+            placeholder="nome"
+          ></Input>
+          <Input
+            type="text"
+            name="image"
+            id="image"
+            value={formInfo.image}
+            onChange={handleInputChange}
+            placeholder="foto"
+          ></Input>
+          <Botao type="submit">Cadastrar</Botao>
+          <Teste>
+            <Link to="/">Já tem uma conta? Faça login!</Link>
+          </Teste>
+        </Container>
+      </form>
     </>
-    )
+  );
 }
 
 const Logo = styled.div`
@@ -74,8 +144,8 @@ const Botao = styled.button`
 `;
 
 const Teste = styled.div`
-    padding:20px;
-   
+  padding: 20px;
+
   a {
     font-family: "Lexend Deca";
     font-style: normal;

@@ -1,21 +1,84 @@
 import logo from "./img/logo.jpg";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useContext, useState } from "react";
+import { UsuarioContext } from "./contexts/UsuarioContext";
+import axios from "axios";
 
 export default function Login() {
+  const { setUsuario } = useContext(UsuarioContext);
+  const [loginInfo, setLoginInfo] = useState({
+    password: "",
+    email: "",
+  });
+
+  let navigate = useNavigate();
+
+  const LOGIN_URL =
+    "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login";
+
+  const handleInputChange = (event) => {
+    const input = event.target;
+    const inputName = input.name;
+    const inputValue = input.value;
+
+    setLoginInfo((oldFormInfo) => ({
+      ...oldFormInfo,
+      [inputName]: inputValue,
+    }));
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    logarUsuario();
+
+    // chamr a API de login
+    // dentro do then da promise
+  };
+
+  const logarUsuario = () => {
+    const promise = axios.post(LOGIN_URL, loginInfo);
+
+    promise.then((resposta) => {
+      // api retorna um usuario
+      setUsuario(resposta.data);
+      navigate("../habitos", { replace: true });
+    });
+
+    promise.catch((error) =>
+      console.log("DEU RUIM LOGIN: " + error.response.data)
+    );
+  };
+
   return (
     <>
       <Logo>
         <img src={logo} alt="logo" />
       </Logo>
-      <Container>
-        <Email placeholder="email"></Email>
-        <Senha placeholder="senha"></Senha>
-        <Botao>Entrar</Botao>
-        <Teste>
-          <Link to="/cadastro">Não tem uma conta? Cadastre-se</Link>
-        </Teste>
-      </Container>
+      <form onSubmit={handleSubmit}>
+        <Container>
+          <Email
+            type="text"
+            name="email"
+            id="email"
+            value={loginInfo.email}
+            onChange={handleInputChange}
+            placeholder="email"
+          ></Email>
+          <Senha
+            type="text"
+            name="password"
+            id="password"
+            value={loginInfo.password}
+            onChange={handleInputChange}
+            placeholder="senha"
+          ></Senha>
+          <Botao type="submit">Entrar</Botao>
+          <StyleLink>
+            <Link to="/cadastro">Não tem uma conta? Cadastre-se</Link>
+          </StyleLink>
+        </Container>
+      </form>
     </>
   );
 }
@@ -87,7 +150,7 @@ const Botao = styled.button`
   line-height: 26px;
 `;
 
-const Teste = styled.div`
+const StyleLink = styled.div`
   padding: 20px;
 
   a {
