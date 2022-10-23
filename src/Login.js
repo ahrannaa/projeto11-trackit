@@ -41,6 +41,7 @@ export default function Login() {
 
     promise.then((resposta) => {
       // api retorna um usuario
+      console.log("FUNCIONOU: " + JSON.stringify(resposta.data))
       setUsuario(resposta.data);
       navigate("../habitos", { replace: true });
     });

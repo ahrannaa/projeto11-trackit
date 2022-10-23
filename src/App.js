@@ -3,7 +3,8 @@ import Cadastro from "./Cadastro";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { UsuarioContext } from "./contexts/UsuarioContext";
 import { useState } from "react";
-import Habitos from "./Habitos";
+import MeusHabitos from "./MeusHabitos";
+import Hoje from "./Hoje";
 
 function App() {
   const [usuario, setUsuario] = useState({});
@@ -27,7 +28,8 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/cadastro" element={<Cadastro />} />
-          <Route path="/habitos" element={<Habitos />} />
+          <Route path="/habitos" element={<MeusHabitos />} />
+          <Route  path="/hoje" element={<Hoje/>} />
         </Routes>
       </UsuarioContext.Provider>
     </BrowserRouter>
