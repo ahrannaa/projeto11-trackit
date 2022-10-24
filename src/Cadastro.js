@@ -9,7 +9,7 @@ export default function Cadastro() {
     name: "",
     password: "",
     email: "",
-    image:""
+    image: "",
   });
 
   let navigate = useNavigate();
@@ -19,8 +19,8 @@ export default function Cadastro() {
 
   const handleInputChange = (event) => {
     const input = event.target;
-    const inputName = input.name; 
-    const inputValue = input.value; 
+    const inputName = input.name;
+    const inputValue = input.value;
 
     setFormInfo((oldFormInfo) => ({
       ...oldFormInfo,
@@ -30,11 +30,11 @@ export default function Cadastro() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    cadastrarUsuario()
+    cadastrarUsuario();
   };
 
   const cadastrarUsuario = () => {
-    console.log(JSON.stringify(formInfo))
+    console.log(JSON.stringify(formInfo));
     const promise = axios.post(CADASTRO_URL, formInfo);
 
     promise.then((resposta) => {
@@ -42,7 +42,10 @@ export default function Cadastro() {
       navigate("../", { replace: true });
     });
 
-    promise.catch((error) => console.log("DEU RUIM: " + error.response.data));
+    promise.catch((error) => {
+      alert(error.response.data.message);
+      console.log("DEU RUIM: " + error.response.data);
+    });
   };
 
   return (
@@ -52,7 +55,8 @@ export default function Cadastro() {
       </Logo>
       <form onSubmit={handleSubmit}>
         <Container>
-          <Input data-identifier="input-email"
+          <Input
+            data-identifier="input-email"
             type="email"
             name="email"
             id="email"
@@ -60,7 +64,8 @@ export default function Cadastro() {
             onChange={handleInputChange}
             placeholder="email"
           ></Input>
-          <Input data-identifier="input-password"
+          <Input
+            data-identifier="input-password"
             type="password"
             name="password"
             id="password"
@@ -68,7 +73,8 @@ export default function Cadastro() {
             onChange={handleInputChange}
             placeholder="senha"
           ></Input>
-          <Input data-identifier="input-name"
+          <Input
+            data-identifier="input-name"
             type="text"
             name="name"
             id="name"
@@ -76,7 +82,8 @@ export default function Cadastro() {
             onChange={handleInputChange}
             placeholder="nome"
           ></Input>
-          <Input data-identifier="input-photo"
+          <Input
+            data-identifier="input-photo"
             type="text"
             name="image"
             id="image"
@@ -86,7 +93,9 @@ export default function Cadastro() {
           ></Input>
           <Botao type="submit">Cadastrar</Botao>
           <Teste>
-            <Link to="/" data-identifier="back-to-login-action">Já tem uma conta? Faça login!</Link>
+            <Link to="/" data-identifier="back-to-login-action">
+              Já tem uma conta? Faça login!
+            </Link>
           </Teste>
         </Container>
       </form>
