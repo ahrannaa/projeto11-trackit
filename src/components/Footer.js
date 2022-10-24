@@ -1,27 +1,36 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 
-
-
-export default function Footer() {
+export default function Footer(props) {
   return (
     <>
-   
-    <Rodapé>
-      <h1>Hábitos</h1>
-      <Circulo>
-      <Link to="/hoje">Hoje</Link>
-      </Circulo>
-     <h1>Histórico</h1>
-    </Rodapé>
-   
-   
-    
+      <Rodape>
+        <Link to="/habitos">Hábitos</Link>
+        <Link to="/hoje">hoje</Link>
+        <Circulo>
+        <CircularProgressbar
+          value={props.porcentagem}
+          text="Hoje"
+          background
+          backgroundPadding={6}
+          styles={buildStyles({
+            backgroundColor: "#FFFFFf",
+            textColor: "#126ba5",
+            pathColor: "#126ba5",
+            trailColor: "green",
+            textSize: "17px",
+          })}
+        />
+        </Circulo>
+
+        <h1>Histórico</h1>
+      </Rodape>
     </>
   );
 }
 
-const Rodapé = styled.div`
+const Rodape = styled.div`
   width: 100%;
   height: 70px;
   position: fixed;
@@ -29,7 +38,7 @@ const Rodapé = styled.div`
   margin-top: 400px;
   bottom: 0;
   left: 0;
-  background: red;
+  background: #126ba5;
   display: flex;
   justify-content: space-around;
 
@@ -47,16 +56,14 @@ const Rodapé = styled.div`
 const Circulo = styled.div`
   width: 91px;
   height: 91px;
-  left: 142px;
-  top: 566px;
-  border-radius: 50px;
-  background: #52b6ff;
+  
 
- p{
-  display: flex;
-  justify-content: center;
-  margin-top: 30px;
-  font-family: 'Lexend Deca';
-  font-size: 18px;
-  color: #ffffff;
-}`
+  p {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    font-family: "Lexend Deca";
+    font-size: 18px;
+    color: #ffffff;
+  }
+`;

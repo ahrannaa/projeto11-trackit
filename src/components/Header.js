@@ -12,9 +12,8 @@ export default function Header() {
   </Cabeçalho>
   )
 }
-
 const Cabeçalho = styled.div`
-
+ 
   width: 100%;
    height: 70px;
   background-color: #126BA5;
@@ -23,7 +22,7 @@ const Cabeçalho = styled.div`
   top: 0;
   left: 0;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   align-items: center;
 
 
@@ -44,5 +43,4 @@ const Cabeçalho = styled.div`
     height: 51px;
     border-radius: 98.5px;
    }
-
-`
+  `

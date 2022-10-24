@@ -39,7 +39,7 @@ export default function CadastrarHabito(props) {
     cadastrarHabito();
   };
 
-  const cadastrarHabito = () => {
+ const cadastrarHabito = () => {
     const config = {
       headers: {
         Authorization : `Bearer ${usuario.token}`
@@ -94,7 +94,8 @@ const Container = styled.div`
   width: 340px;
   height: 180px;
   left: 17px;
-  background: pink;
+  margin-bottom: 10px;
+  background: #b7d5e5;
   border-radius: 5px;
 
   input {
@@ -142,7 +143,7 @@ const DiaSelecionado = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  background: blue;
+  background: #CFCFCF;
   border: 1px solid #d5d5d5;
   border-radius: 5px;
   cursor: pointer;

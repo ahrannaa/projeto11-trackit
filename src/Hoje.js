@@ -5,11 +5,14 @@ import { UsuarioContext } from "./contexts/UsuarioContext";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 
-export default function Hoje() {
+export default function Hoje(props) {
   const [habitosDoDia, setHabitosDoDia] = useState([]);
-  const { usuario } = useContext(UsuarioContext);
+  const { usuario, porcentagem, calcularPorcentagem } =
+    useContext(UsuarioContext);
 
-  useEffect(() => {obterHabitosDoDia()}, []);
+  useEffect(() => {
+    obterHabitosDoDia();
+  }, []);
 
   function obterHabitosDoDia() {
     const URL =
@@ -26,6 +29,7 @@ export default function Hoje() {
     promise.then((res) => {
       console.log(res.data);
       setHabitosDoDia(res.data);
+      calcularPorcentagem(res.data);
     });
 
     promise.catch((error) => {
@@ -47,7 +51,7 @@ export default function Hoje() {
     console.log(config);
 
     promise.then((res) => {
-      obterHabitosDoDia()
+      obterHabitosDoDia();
     });
 
     promise.catch((error) => {
@@ -69,7 +73,7 @@ export default function Hoje() {
     console.log(config);
 
     promise.then((res) => {
-      obterHabitosDoDia()
+      obterHabitosDoDia();
     });
 
     promise.catch((error) => {
@@ -77,56 +81,91 @@ export default function Hoje() {
     });
   }
 
-
   return (
     <>
       <Header />
-      {habitosDoDia.map((habito) => (
-        <Container>
-          <BoxLeft>
-            <h1>{habito.name}</h1>
-            <p>
-              Sequência atual: {habito.currentSequence} <br />
-              Seu recorde:{habito.highestSequence}
-            </p>
-          </BoxLeft>
-          <BoxRight>
-            {habito.done ? (
-              <BoxCheck onClick={() => desmarcarHabito(habito.id)}>
-                <ion-icon name="checkmark-outline"></ion-icon>
-              </BoxCheck>
-            ) : (
-              <BoxUnCheck onClick={() => marcarHabito(habito.id)}>
-                <ion-icon name="checkmark-outline"></ion-icon>
-              </BoxUnCheck>
-            )}
-          </BoxRight>
-        </Container>
-      ))}
-      <Footer />
+
+      <DiaHoje>
+        Segunda, 24/07 <br />
+        <h4>100%concluido</h4>{" "}
+      </DiaHoje>
+
+      <BigBox>
+        {habitosDoDia.map((habito) => (
+          <Container>
+            <Teste>
+              <BoxLeft>
+                <h1>{habito.name}</h1>
+                <p>
+                  Sequência atual: {habito.currentSequence} <br />
+                  Seu recorde:{habito.highestSequence}
+                </p>
+              </BoxLeft>
+              <BoxRight>
+                {habito.done ? (
+                  <BoxCheck onClick={() => desmarcarHabito(habito.id)}>
+                    <ion-icon name="checkmark-outline"></ion-icon>
+                  </BoxCheck>
+                ) : (
+                  <BoxUnCheck onClick={() => marcarHabito(habito.id)}>
+                    <ion-icon name="checkmark-outline"></ion-icon>
+                  </BoxUnCheck>
+                )}
+              </BoxRight>
+            </Teste>
+          </Container>
+        ))}
+      </BigBox>
+
+      <Footer porcentagem={porcentagem}>Hoje</Footer>
     </>
   );
 }
 
-const Container = styled.div`
+const BigBox = styled.div`
+  margin-top: px;
+`;
+
+const DiaHoje = styled.div`
+  padding: 90px;
+  display: flex;
+  justify-content: center;
+`;
+
+const Teste = styled.div`
   width: 340px;
   height: 94px;
   left: 18px;
   display: flex;
   justify-content: space-around;
-  margin-top: 40px;
-  background: orange;
+  background: #ffffff;
   border-radius: 5px;
+
+  @media (max-width: 768px) {
+    width: 340px;
+    height: 94px;
+    left: 18px;
+    display: flex;
+    justify-content: space-around;
+    background: #ffffff;
+    border-radius: 5px;
+  }
+`;
+
+const Container = styled.div`
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10px;
 `;
 
 const BoxLeft = styled.div`
-  h1 {
+    h1 {
     font-family: "Lexend Deca";
     font-style: normal;
     font-weight: 400;
     font-size: 19.976px;
     line-height: 25px;
-  }
+  
 
   p {
     font-family: "Lexend Deca";

@@ -1,14 +1,15 @@
 import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import Footer from "./components/Footer";
 import Header from "./components/Header";
 import CadastrarHabito from "./components/CadastrarHabito";
 import Habito from "./components/Habito";
 import axios from "axios";
 import { UsuarioContext } from "./contexts/UsuarioContext";
+import Footer from "./components/Footer";
 
 export default function MeusHabitos(props) {
-  const { usuario } = useContext(UsuarioContext);
+  const { usuario, porcentagem, calcularPorcentagem } =
+    useContext(UsuarioContext);
   const [showCadastrarHabito, setShowCadastrarHabito] = useState("false");
   const [habitos, setHabitos] = useState([]);
 
@@ -36,6 +37,8 @@ export default function MeusHabitos(props) {
     promise.then((res) => {
       console.log(res.data);
       setHabitos(res.data);
+      // obter habitos do dia
+      // calcularPorcentagem(res.data)
     });
 
     promise.catch((error) => {
@@ -45,7 +48,7 @@ export default function MeusHabitos(props) {
 
   const paragrafo = (
     <Paragrafo>
-      Você não tem nenhum hábito cadastrado ainda. Adicione um hábito para
+      Você não tem nenhum hábito<br/> cadastrado ainda. Adicione um hábito<br/>para
       começar a Trackear!
     </Paragrafo>
   );
@@ -66,12 +69,13 @@ export default function MeusHabitos(props) {
         const novosHabitos = habitos.filter((habito) => habito.id !== id);
         setHabitos(novosHabitos);
       });
-    } 
+    }
   }
 
   return (
     <>
       <Header />
+
       <Container>
         <h1>Meus Habitos</h1>
         <Botao onClick={() => setShowCadastrarHabito("true")}>+</Botao>
@@ -89,13 +93,14 @@ export default function MeusHabitos(props) {
           days={habito.days}
         />
       ))}
-      <Footer />
+
+      <Footer porcentagem={porcentagem}>Hoje</Footer>
     </>
   );
 }
 
 const Container = styled.div`
-  display: flex;
+ display: flex;
   margin-top: 98px;
   justify-content: space-between;
   h1 {
@@ -106,6 +111,22 @@ const Container = styled.div`
     line-height: 29px;
     color: #126ba5;
   }
+
+ @media (max-width: 768px)
+  {display: flex;
+  margin-top: 98px;
+  justify-content: space-between;
+  
+  h1 {
+    font-family: "Lexend Deca";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 22.976px;
+    line-height: 29px;
+    color: #126ba5;
+  }
+} 
+  
 `;
 
 const Botao = styled.button`

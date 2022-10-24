@@ -1,4 +1,5 @@
 import Login from "./Login";
+
 import Cadastro from "./Cadastro";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { UsuarioContext } from "./contexts/UsuarioContext";
@@ -8,28 +9,27 @@ import Hoje from "./Hoje";
 
 function App() {
   const [usuario, setUsuario] = useState({});
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
-  const [name, setName] = useState("");
-  const [foto, setFoto] = useState("");
-
-  const handleSubmit = ({ email, senha, name, foto }) => {
-    console.log("dados app", { email, senha, name });
-
-    setEmail(email);
-    setSenha(senha);
-    setName(name);
-    setFoto(foto);
-  };
+  const [porcentagem, setPorcentagem] = useState(0);
+ 
+  function calcularPorcentagem(habitos) {
+    //fazer o calculo
+    let percent = 0;
+    if (habitos.length > 0) {
+      const habitosFeitos = habitos.filter((habitoFeito) => habitoFeito.done); // []
+      percent = (habitosFeitos.length / habitos.length) * 100;
+      console.log("porcentagem: " + porcentagem);
+    }
+    setPorcentagem(percent);
+  }
 
   return (
     <BrowserRouter>
-      <UsuarioContext.Provider value={{ usuario, setUsuario }}>
+      <UsuarioContext.Provider value={{ usuario, porcentagem, setUsuario, calcularPorcentagem}}>
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/cadastro" element={<Cadastro />} />
-          <Route path="/habitos" element={<MeusHabitos />} />
-          <Route  path="/hoje" element={<Hoje/>} />
+         <Route path="/habitos" element={<MeusHabitos/>} />
+          <Route path="/hoje" element={<Hoje/>} />
         </Routes>
       </UsuarioContext.Provider>
     </BrowserRouter>
@@ -37,3 +37,4 @@ function App() {
 }
 
 export default App;
+
