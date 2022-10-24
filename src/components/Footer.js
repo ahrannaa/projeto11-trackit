@@ -6,25 +6,29 @@ export default function Footer(props) {
   return (
     <>
       <Rodape>
-        <Link to="/habitos">Hábitos</Link>
-        <Link to="/hoje">hoje</Link>
+        <StyleLink StyleLink to="/habitos" data-identifier="habit-page-action">
+          Hábitos
+        </StyleLink>
+
         <Circulo>
-        <CircularProgressbar
-          value={props.porcentagem}
-          text="Hoje"
-          background
-          backgroundPadding={6}
-          styles={buildStyles({
-            backgroundColor: "#FFFFFf",
-            textColor: "#126ba5",
-            pathColor: "#126ba5",
-            trailColor: "green",
-            textSize: "17px",
-          })}
-        />
+          <StyledLink to="/hoje">
+            <CircularProgressbar
+              value={props.porcentagem}
+              text="Hoje"
+              background
+              backgroundPadding={6}
+              styles={buildStyles({
+                backgroundColor: "#FFFFFf",
+                textColor: "#126ba5",
+                pathColor: "#126ba5",
+                trailColor: "red",
+                textSize: "17px",
+              })}
+            />
+          </StyledLink>
         </Circulo>
 
-        <h1>Histórico</h1>
+        <StyleLink to="/historico" data-identifier="historic-page-action">Histórico</StyleLink>
       </Rodape>
     </>
   );
@@ -56,14 +60,21 @@ const Rodape = styled.div`
 const Circulo = styled.div`
   width: 91px;
   height: 91px;
-  
-
-  p {
-    display: flex;
-    justify-content: center;
-    margin-top: 30px;
-    font-family: "Lexend Deca";
-    font-size: 18px;
-    color: #ffffff;
+  .CircularProgressbar-text {
+    transform: translate(-15px, 5px);
   }
+`;
+
+const StyleLink = styled(Link)`
+  text-decoration: none;
+  color: #ffffff;
+  font-family: "Lexend Deca";
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+`;
+
+const StyledLink = styled(Link)`
+  display: flex;
+  color: red;
 `;

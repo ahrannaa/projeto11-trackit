@@ -13,14 +13,15 @@ export default function Habito(props) {
   };
 
   return (
+    <Container>
     <HabitoCadastrado>
       <Header>
-        <h3>{props.name}</h3>
-        <StyledLink onClick={props.onDelete}>
+        <h3 data-identifier="habit-name">{props.name}</h3>
+        <StyledLink onClick={props.onDelete} data-identifier="delete-habit-btn">
           <ion-icon name="trash-outline"></ion-icon>
         </StyledLink>
       </Header>
-      <Container>
+      <Box>
         {Object.keys(dias).map((day) =>
           props.days.includes(Number(day)) ? (
             <DiaSelecionado>{dias[day]}</DiaSelecionado>
@@ -28,11 +29,15 @@ export default function Habito(props) {
             <Dia>{dias[day]}</Dia>
           )
         )}
-      </Container>
+      </Box>
     </HabitoCadastrado>
+    </Container>
   );
 }
-
+const Container = styled.div `
+display: flex;
+justify-content: center;
+`
 const HabitoCadastrado = styled.div`
   width: 340px;
   left: 17px;
@@ -40,6 +45,7 @@ const HabitoCadastrado = styled.div`
   background: #b7d5e5;
   margin-bottom: 10px;
   border-radius: 5px;
+
 `;
 
 const Header = styled.div`
@@ -64,7 +70,7 @@ const StyledLink = styled(Link)`
   margin-right: 20px;
   color: #666666;
 `;
-const Container = styled.div`
+const Box = styled.div`
   display: flex;
   margin-left: 15px;
 `;

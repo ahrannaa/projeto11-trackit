@@ -1,11 +1,11 @@
 import Login from "./Login";
-
 import Cadastro from "./Cadastro";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { UsuarioContext } from "./contexts/UsuarioContext";
 import { useState } from "react";
 import MeusHabitos from "./MeusHabitos";
 import Hoje from "./Hoje";
+import Historico from "./Historico";
 
 function App() {
   const [usuario, setUsuario] = useState({});
@@ -17,9 +17,8 @@ function App() {
     if (habitos.length > 0) {
       const habitosFeitos = habitos.filter((habitoFeito) => habitoFeito.done); // []
       percent = (habitosFeitos.length / habitos.length) * 100;
-      console.log("porcentagem: " + porcentagem);
     }
-    setPorcentagem(percent);
+    setPorcentagem(Math.trunc(percent));
   }
 
   return (
@@ -28,8 +27,9 @@ function App() {
         <Routes>
           <Route path="/" element={<Login />} />
           <Route path="/cadastro" element={<Cadastro />} />
-         <Route path="/habitos" element={<MeusHabitos/>} />
+          <Route path="/habitos" element={<MeusHabitos/>} />
           <Route path="/hoje" element={<Hoje/>} />
+          <Route path="/historico" element={<Historico/>} />
         </Routes>
       </UsuarioContext.Provider>
     </BrowserRouter>

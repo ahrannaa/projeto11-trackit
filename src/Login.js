@@ -3,10 +3,12 @@ import styled from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { UsuarioContext } from "./contexts/UsuarioContext";
+import { ThreeDots } from "react-loader-spinner";
 import axios from "axios";
 
 export default function Login() {
   const { setUsuario } = useContext(UsuarioContext);
+  const [carregando, setCarregando] = useState("false");
   const [loginInfo, setLoginInfo] = useState({
     password: "",
     email: "",
@@ -30,26 +32,46 @@ export default function Login() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setCarregando("true")
     logarUsuario();
-
-    // chamr a API de login
-    // dentro do then da promise
   };
 
   const logarUsuario = () => {
     const promise = axios.post(LOGIN_URL, loginInfo);
 
     promise.then((resposta) => {
-      // api retorna um usuario
-      console.log("FUNCIONOU: " + JSON.stringify(resposta.data))
+       console.log("FUNCIONOU: " + JSON.stringify(resposta.data));
       setUsuario(resposta.data);
-      navigate("../habitos", { replace: true });
+      setCarregando("false")
+      navigate("../hoje", { replace: true });
     });
 
-    promise.catch((error) =>
-      console.log("DEU RUIM LOGIN: " + error.response.data)
-    );
+    promise.catch((error) => {
+      setCarregando("false")
+      alert(error.response.data.message)
+    });
   };
+
+  let entrarBotao = <Botao type="submit">Entrar</Botao>;
+
+  if (carregando === "true") {
+    entrarBotao  = (
+      <Botao type="submit" disabled>
+        <Spinner>
+          <ThreeDots
+            height="40"
+            width="80"
+            radius="9"
+            color="#FFFFFF"
+            ariaLabel="three-dots-loading"
+            wrapperStyle={{}}
+            wrapperClassName=""
+            visible={true}
+          />
+        </Spinner>
+      </Botao>
+    );
+  }
 
   return (
     <>
@@ -58,7 +80,8 @@ export default function Login() {
       </Logo>
       <form onSubmit={handleSubmit}>
         <Container>
-          <Email
+          <Email data-identifier="input-email"
+            disabled={carregando === "false" ? false : true}
             type="text"
             name="email"
             id="email"
@@ -66,7 +89,8 @@ export default function Login() {
             onChange={handleInputChange}
             placeholder="email"
           ></Email>
-          <Senha
+          <Senha data-identifier="input-password"
+            disabled={carregando === "false" ? false : true}
             type="text"
             name="password"
             id="password"
@@ -74,9 +98,9 @@ export default function Login() {
             onChange={handleInputChange}
             placeholder="senha"
           ></Senha>
-          <Botao type="submit">Entrar</Botao>
+          {entrarBotao} 
           <StyleLink>
-            <Link to="/cadastro">Não tem uma conta? Cadastre-se</Link>
+            <Link to= "/cadastro" data-identifier="sign-up-action">Não tem uma conta? Cadastre-se</Link>
           </StyleLink>
         </Container>
       </form>
@@ -164,4 +188,10 @@ const StyleLink = styled.div`
     text-decoration-line: underline;
     color: #52b6ff;
   }
+`;
+
+const Spinner = styled.div`
+  height: 40px;
+  width: 80px;
+  margin: 0 auto;
 `;

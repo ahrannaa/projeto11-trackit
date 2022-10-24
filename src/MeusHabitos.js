@@ -18,6 +18,12 @@ export default function MeusHabitos(props) {
     obterHabitos();
   }
 
+  function cancelar() {
+    setShowCadastrarHabito("false")
+  }
+
+
+
   useEffect(() => {
     obterHabitos();
   }, []);
@@ -37,8 +43,7 @@ export default function MeusHabitos(props) {
     promise.then((res) => {
       console.log(res.data);
       setHabitos(res.data);
-      // obter habitos do dia
-      // calcularPorcentagem(res.data)
+     
     });
 
     promise.catch((error) => {
@@ -47,7 +52,7 @@ export default function MeusHabitos(props) {
   }
 
   const paragrafo = (
-    <Paragrafo>
+    <Paragrafo data-identifier="no-habit-message">
       Você não tem nenhum hábito<br/> cadastrado ainda. Adicione um hábito<br/>para
       começar a Trackear!
     </Paragrafo>
@@ -78,11 +83,11 @@ export default function MeusHabitos(props) {
 
       <Container>
         <h1>Meus Habitos</h1>
-        <Botao onClick={() => setShowCadastrarHabito("true")}>+</Botao>
+        <Botao data-identifier="create-habit-btn" onClick={() => setShowCadastrarHabito("true")}>+</Botao>
       </Container>
       {showCadastrarHabito === "false" && habitos.length === 0 ? paragrafo : ""}
       {showCadastrarHabito === "true" ? (
-        <CadastrarHabito onClick={addHabito} />
+        <CadastrarHabito onClick={addHabito} onCancelar={cancelar} />
       ) : (
         <></>
       )}
@@ -100,9 +105,10 @@ export default function MeusHabitos(props) {
 }
 
 const Container = styled.div`
- display: flex;
+  display: flex;
   margin-top: 98px;
-  justify-content: space-between;
+  justify-content: space-around;
+  
   h1 {
     font-family: "Lexend Deca";
     font-style: normal;

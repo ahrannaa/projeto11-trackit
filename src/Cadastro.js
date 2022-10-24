@@ -52,7 +52,7 @@ export default function Cadastro() {
       </Logo>
       <form onSubmit={handleSubmit}>
         <Container>
-          <Input
+          <Input data-identifier="input-email"
             type="email"
             name="email"
             id="email"
@@ -60,7 +60,7 @@ export default function Cadastro() {
             onChange={handleInputChange}
             placeholder="email"
           ></Input>
-          <Input
+          <Input data-identifier="input-password"
             type="password"
             name="password"
             id="password"
@@ -68,7 +68,7 @@ export default function Cadastro() {
             onChange={handleInputChange}
             placeholder="senha"
           ></Input>
-          <Input
+          <Input data-identifier="input-name"
             type="text"
             name="name"
             id="name"
@@ -76,7 +76,7 @@ export default function Cadastro() {
             onChange={handleInputChange}
             placeholder="nome"
           ></Input>
-          <Input
+          <Input data-identifier="input-photo"
             type="text"
             name="image"
             id="image"
@@ -86,7 +86,7 @@ export default function Cadastro() {
           ></Input>
           <Botao type="submit">Cadastrar</Botao>
           <Teste>
-            <Link to="/">Já tem uma conta? Faça login!</Link>
+            <Link to="/" data-identifier="back-to-login-action">Já tem uma conta? Faça login!</Link>
           </Teste>
         </Container>
       </form>

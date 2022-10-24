@@ -4,15 +4,36 @@ import styled from "styled-components";
 import { UsuarioContext } from "./contexts/UsuarioContext";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
+import dayjs from "dayjs";
+import locale from "dayjs/locale/pt-br";
+import updateLocale from "dayjs/plugin/updateLocale";
 
 export default function Hoje(props) {
   const [habitosDoDia, setHabitosDoDia] = useState([]);
-  const { usuario, porcentagem, calcularPorcentagem } =
-    useContext(UsuarioContext);
+  const { usuario, porcentagem, calcularPorcentagem } = useContext(UsuarioContext);
+
+  dayjs.extend(updateLocale);
+
+  dayjs.updateLocale("pt-br", {
+    weekdays: [
+      "Domingo",
+      "Segunda",
+      "Terça",
+      "Quarta",
+      "Quinta",
+      "Sexta",
+      "Sábado",
+    ],
+  });
 
   useEffect(() => {
     obterHabitosDoDia();
   }, []);
+
+  function obterDataAtual() {
+    const now = dayjs().locale(locale);
+    return now.format("dddd, DD/MM");
+  }
 
   function obterHabitosDoDia() {
     const URL =
@@ -84,24 +105,26 @@ export default function Hoje(props) {
   return (
     <>
       <Header />
-
-      <DiaHoje>
-        Segunda, 24/07 <br />
-        <h4>100%concluido</h4>{" "}
-      </DiaHoje>
+      <Titulo>
+        <DiaHoje>
+          <h1>{obterDataAtual()}</h1>
+          <h4>{porcentagem}% concluido</h4>
+          {""}
+        </DiaHoje>
+      </Titulo>
 
       <BigBox>
         {habitosDoDia.map((habito) => (
-          <Container>
+          <Container data-identifier="today-infos" >
             <Teste>
-              <BoxLeft>
+              <BoxLeft data-identifier="today-infos" >
                 <h1>{habito.name}</h1>
                 <p>
                   Sequência atual: {habito.currentSequence} <br />
                   Seu recorde:{habito.highestSequence}
                 </p>
               </BoxLeft>
-              <BoxRight>
+              <BoxRight data-identifier="done-habit-btn" >
                 {habito.done ? (
                   <BoxCheck onClick={() => desmarcarHabito(habito.id)}>
                     <ion-icon name="checkmark-outline"></ion-icon>
@@ -122,23 +145,41 @@ export default function Hoje(props) {
   );
 }
 
-const BigBox = styled.div`
-  margin-top: px;
-`;
+const BigBox = styled.div``;
 
 const DiaHoje = styled.div`
-  padding: 90px;
-  display: flex;
-  justify-content: center;
+  padding: 80px;
+  
+
+  h1 {
+    font-family: "Lexend Deca";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 22.976px;
+    line-height: 29px;
+    color: #126ba5;
+  }
+
+  h4 {
+    font-family: "Lexend Deca";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 17.976px;
+    line-height: 22px;
+     color: #8fc549;
+  }
 `;
 
+const Titulo = styled.div`
+  flex-direction: column;
+`;
 const Teste = styled.div`
   width: 340px;
   height: 94px;
   left: 18px;
   display: flex;
   justify-content: space-around;
-  background: #ffffff;
+  background: #b7d5e5;
   border-radius: 5px;
 
   @media (max-width: 768px) {
@@ -147,7 +188,7 @@ const Teste = styled.div`
     left: 18px;
     display: flex;
     justify-content: space-around;
-    background: #ffffff;
+    background: #b7d5e5;
     border-radius: 5px;
   }
 `;
@@ -159,13 +200,13 @@ const Container = styled.div`
 `;
 
 const BoxLeft = styled.div`
-    h1 {
+  h1 {
     font-family: "Lexend Deca";
     font-style: normal;
     font-weight: 400;
     font-size: 19.976px;
     line-height: 25px;
-  
+  }
 
   p {
     font-family: "Lexend Deca";

@@ -8,7 +8,7 @@ export default function Header() {
   return(
     <Cabeçalho>
       <h1>TrackIt</h1>
-      <img src= { usuario.image }alt="foto-perfil"/>
+      <img src= { usuario.image }alt="foto-perfil" data-identifier="avatar"/>
   </Cabeçalho>
   )
 }
